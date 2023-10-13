@@ -124,12 +124,13 @@ export default {
     justify-content: space-between;
     width: 100%;
     max-width: 64px;
-    background-color: var(--background4);
+    background-color: var(--backgroundInput);
     color: var(--text4);
-    border: 1px solid var(--border3);
+    border: 1px solid var(--border2);
+    box-shadow: var(--input-inner-shadow);
 
     &.active {
-      box-shadow: 0 0 0 1px var(--blueBorder);      
+      box-shadow: var(--input-inner-shadow), 0 0 0 1px var(--blueBorder);      
     }
 
     .suffix{

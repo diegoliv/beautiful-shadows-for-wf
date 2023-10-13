@@ -1,36 +1,23 @@
 <template>
-  <div class="presets-modal">
-    <header>
-      <span>Shadow Presets</span>
-      <button 
-        class="close"
-        @click="$emit('close')"
-      >
-        <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-          <path d="M3.414 2 2 3.414 6.586 8 2 12.586 3.414 14 8 9.414 12.585 14 14 12.585 9.414 8 14 3.415 12.585 2 8 6.586 3.414 2Z" fill="currentColor"/>
-        </svg>
-      </button>
-    </header>
-    <ul class="presets-list">
-      <li 
-        v-for="(preset,key) in presets" 
-        :key="key"
-      >
+  <ul class="presets-list">
+    <li 
+      v-for="(preset,key) in presets" 
+      :key="key"
+    >
+    <div 
+      class="preset-item"
+      :class="preset.mode"
+      :style="getBgStyle(preset)"
+      @click="$emit('selected', preset)"
+    >
       <div 
-        class="preset-item"
-        :class="preset.mode"
-        :style="getBgStyle(preset)"
-        @click="$emit('selected', preset)"
-      >
-        <div 
-          class="box-preview"
-          :style="getBoxStyle(preset)"
-        ></div>
-        <div class="preset-label">{{ preset.name }}</div>
-      </div>
-      </li>
-    </ul>
-  </div>
+        class="box-preview"
+        :style="getBoxStyle(preset)"
+      ></div>
+      <div class="preset-label">{{ preset.name }}</div>
+    </div>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -169,115 +156,69 @@ export default {
 </script>
 
 <style lang="scss">
-.presets-modal {
-  width: 100%;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--background1);
-  overflow: hidden;
-  border-radius: 4px;
-  box-shadow: 0px 40px 80px -40px #000, 
-              0px 24px 40px -24px rgba(0, 0, 0, 0.25), 
-              0px 16px 24px -16px rgba(0, 0, 0, 0.25), 
-              0px 4px 8px -4px rgba(0, 0, 0, 0.25);  
+.presets-list {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  overflow: auto;
 
-  header{
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px;
-    line-height: 1.1;
-    font-weight: 600;
-    font-size: var(--font-size-large);
-    color: var(--text1);
-    border-bottom: 1px solid var(--border1);
+  li {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-bottom: 100%;
 
-    .close {
-      padding: 0;
-      margin: 0;
-      background-color: transparent;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      color: var(--text3);
-
-      svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      &:hover {
-        color: var(--text1);
+    &:hover{
+      z-index: 2;
+      .preset-item {
+        box-shadow: 0 0 0 1px var(--blueBorder), inset 0 0 0 1px var(--blueBorder);
       }
     }
+
   }
 
-  .presets-list {
+  .preset-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 8px 8px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px var(--border2);
 
-    li {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      padding-bottom: 100%;
-
-      &:hover{
-        z-index: 2;
-        .preset-item {
-          box-shadow: 0 0 0 1px var(--blueBorder), inset 0 0 0 1px var(--blueBorder);
-        }
-      }
-
+    .box-preview {
+      width: 124px;
+      height: 124px;
+      margin: -32px 0;
+      flex-shrink: 0;
+      border-radius: 8px;
+      transform: scale(.5);
     }
 
-    .preset-item {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 8px 8px;
-      overflow: hidden;
-      cursor: pointer;
-      box-shadow: 0 0 0 1px var(--border2);
+    .preset-label {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-family: var(--font-stack);
+      font-weight: 700;
+      font-size: var(--font-size-small);
+      letter-spacing: -0.04em;
+      color: rgba(0,0,0,0.5);
+    }
 
-      .box-preview {
-        width: 124px;
-        height: 124px;
-        margin: -32px 0;
-        flex-shrink: 0;
-        border-radius: 8px;
-        transform: scale(.5);
-      }
-
+    &.dark {
       .preset-label {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        font-family: var(--font-stack);
-        font-weight: 700;
-        font-size: var(--font-size-small);
-        letter-spacing: -0.04em;
-        color: rgba(0,0,0,0.5);
-      }
-
-      &.dark {
-        .preset-label {
-          color: rgba(255,255,255,0.7);
-        }
+        color: rgba(255,255,255,0.7);
       }
     }
   }

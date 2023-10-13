@@ -5,10 +5,15 @@
         :shadow="shadowCSS" 
         :bg-color="bgColor"
         :box-color="boxColor"
-        @setbgcolor="setBgColor"
-        @setboxcolor="setBoxColor"
-        @openpresets="isPresetsModalOpen = true"
-      />
+      >
+        <PreviewControls
+          :bg-color="bgColor"
+          :box-color="boxColor"
+          @setbgcolor="setBgColor"
+          @setboxcolor="setBoxColor"
+          @openpresets="isPresetsModalOpen = true"
+        />
+      </Preview>
       <div class="controls">
         <Control id="angle" label="Light Position" v-model="angle" min="0" max="360" suffix="deg" />
         <Control id="distance" label="Distance" v-model="distance" min="1" max="1000" />
@@ -22,10 +27,14 @@
           v-if="isPresetsModalOpen"
         >
           <div class="presets-modal-backdrop"></div>
-          <PresetsModal
+          <Modal
+            title="Shadow Presets"
+            @close="closeModal()"
+          >
+          <Presets
             @selected="setPreset"
-            @close="isPresetsModalOpen = false"
           />
+        </Modal>
         </div>
       </Transition>
     </div>
@@ -37,17 +46,21 @@
 import { getSmoothShadow } from 'smooth-shadow';
 
 import Preview from './Components/Preview.vue';
+import PreviewControls from './Components/PreviewControls.vue';
 import Control from './Components/Control.vue';
 import ColorControl from './Components/ColorControl.vue';
-import PresetsModal from './Components/PresetsModal.vue';
+import Modal from './Components/Modal.vue';
+import Presets from './Components/Presets.vue';
 import NotSelected from "./Components/NotSelected.vue";
 
 export default {
   components: {
     Preview,
+    PreviewControls,
     Control,
     ColorControl,
-    PresetsModal,
+    Modal,
+    Presets,
     NotSelected
   },
   data() {
@@ -135,6 +148,10 @@ export default {
       this.boxColor = preset.boxColor;
 
       this.isPresetsModalOpen = false;
+    },
+    closeModal() {
+      this.isPresetsModalOpen = false;
+      console.log('close');      
     }
   },
   watch: {
@@ -197,7 +214,7 @@ export default {
         transition-delay: 1s;
       }
 
-      .presets-modal {
+      .modal {
         z-index: 2;
         transition: all ease .3s;
       }
