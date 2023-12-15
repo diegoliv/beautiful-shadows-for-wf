@@ -1,8 +1,9 @@
 <template>
-  <ul class="presets-list">
-    <li 
+  <div class="presets-list">
+    <button 
       v-for="(preset,key) in presets" 
       :key="key"
+      tabindex="0"
     >
     <div 
       class="preset-item"
@@ -16,8 +17,8 @@
       ></div>
       <div class="preset-label">{{ preset.name }}</div>
     </div>
-    </li>
-  </ul>
+    </button>
+  </div>
 </template>
 
 <script>
@@ -160,17 +161,17 @@ export default {
   height: 100%;
   margin: 0;
   padding: 0;
-  list-style: none;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1px;
-  overflow: auto;
 
-  li {
+  button {
     position: relative;
     z-index: 1;
     width: 100%;
     padding-bottom: 100%;
+    background-color: transparent;
+    border: none;
 
     &:hover{
       z-index: 2;
@@ -179,6 +180,9 @@ export default {
       }
     }
 
+    &:focus .preset-item {
+      box-shadow: 0 0 0 1px var(--blueBorder), inset 0 0 0 1px var(--blueBorder);      
+    }
   }
 
   .preset-item {

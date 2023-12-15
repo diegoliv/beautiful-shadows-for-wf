@@ -1,11 +1,13 @@
 <template>
-  <div class="app-wrapper">
+  <main class="app-wrapper">
     <div class="app-ui" v-show="isElSelected">
       <Preview 
-        :shadow="shadowCSS" 
-        :bg-color="bgColor"
-        :box-color="boxColor"
+      :type="shadowType"
+      :shadow="shadowCSS" 
+      :bg-color="bgColor"
+      :box-color="boxColor"
       >
+        <TypeSelector v-model="shadowType" />
         <PreviewControls
           :bg-color="bgColor"
           :box-color="boxColor"
@@ -14,15 +16,15 @@
           @openpresets="isPresetsModalOpen = true"
         />
       </Preview>
-      <div class="controls">
+      <aside class="controls">
         <Control id="angle" label="Light Position" v-model="angle" min="0" max="360" suffix="deg" />
         <Control id="distance" label="Distance" v-model="distance" min="1" max="1000" />
         <Control id="intensity" label="Intensity" v-model="intensity" min="0.1" max="1" />
         <Control id="sharpness" label="Sharpness" v-model="sharpness" min="0.1" max="1" />
         <ColorControl id="color" label="Color" v-model="color" />
-      </div>
+      </aside>
       <Transition>
-        <div 
+        <section 
           class="presets-modal-wrapper"
           v-if="isPresetsModalOpen"
         >
@@ -35,16 +37,17 @@
             @selected="setPreset"
           />
         </Modal>
-        </div>
+        </section>
       </Transition>
     </div>
     <NotSelected />
-  </div>
+  </main>
 </template>
 
 <script>
 import { getSmoothShadow } from 'smooth-shadow';
 
+import TypeSelector from "./Components/TypeSelector.vue"
 import Preview from './Components/Preview.vue';
 import PreviewControls from './Components/PreviewControls.vue';
 import Control from './Components/Control.vue';
@@ -55,6 +58,7 @@ import NotSelected from "./Components/NotSelected.vue";
 
 export default {
   components: {
+    TypeSelector,
     Preview,
     PreviewControls,
     Control,
@@ -68,6 +72,7 @@ export default {
       isElSelected: false,
       selectedEl: null,
       selectedStyle: null,
+      shadowType: 'box-shadow',
       angle: 0,
       intensity: 0.2,
       distance: 500,
@@ -151,12 +156,13 @@ export default {
     },
     closeModal() {
       this.isPresetsModalOpen = false;
-      console.log('close');      
     }
   },
   watch: {
     async shadowCSS() {
-      this.selectedStyle.setProperties({ 'box-shadow': this.shadowCSS });
+      let shadowProp = {};
+      shadowProp[this.shadowType] = this.shadowCSS;
+      this.selectedStyle.setProperties(shadowProp);
       await this.selectedStyle.save();
     }
   }

@@ -68,5 +68,9 @@ export default {
       }
     }
   }
+
+  .modal-body {
+    overflow: auto;
+  }
 }
 </style>

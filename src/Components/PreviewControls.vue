@@ -18,11 +18,12 @@
         <div class="color-picker-container" v-show="isForegroundPickerActive">
           <Chrome v-model="foreground" />
         </div>
-        <div
+        <button
           class="color-inner"
           :style="`background-color: ${this.foreground};`"
           @click="isForegroundPickerActive = !isForegroundPickerActive"
-        ></div>
+          tabindex="0"
+        ></button>
       </div>
       <div
         class="color background"
@@ -32,11 +33,12 @@
         <div class="color-picker-container" v-show="isBackgroundPickerActive">
           <Chrome v-model="background" />
         </div>
-        <div
+        <button
           class="color-inner"
-          :style="bgStyle"
+          :style="`background-color: ${this.background}`"
           @click="isBackgroundPickerActive = !isBackgroundPickerActive"
-        ></div>
+          tabindex="0"
+        ></button>
       </div>
     </div>
   </div>
@@ -124,6 +126,10 @@ export default {
       inset 0 0 0 1px rgba(255, 255, 255, 1);
     border-radius: 32px;
     cursor: pointer;
+
+    &:focus {
+      outline: 1px solid var(--blueBorder);
+    }
   }
 
   .color {
@@ -140,26 +146,33 @@ export default {
 }
 
 .presets-trigger {
+  position: relative;
   display: flex;
   align-items: center;
-  padding: 4px 12px 4px 8px;
-  background-color: var(--background1);
+  padding: 4px 8px 4px 4px;
   border: none;
-  border-radius: 32px;
-  color: var(--text1);
+  color: var(--actionSecondaryText);
   line-height: 1;
-  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-small);
+  border-radius: var(--border-radius);
+  background-color: var(--background1);
+  background-image: var(--actionSecondaryBackground);
+  box-shadow: var(--boxShadows-action-secondary);
   cursor: pointer;
 
   &:hover {
-    background-color: var(--background2);
+    background-image: var(--actionSecondaryBackgroundHover);
+  }
+
+  &:focus {
+    outline: 1px solid var(--blueBorder);
   }
 
   svg {
     display: block;
     width: 16px;
     height: 16px;
-    margin-right: 4px;
+    margin-right: 2px;
   }
 }
 </style>

@@ -106,6 +106,12 @@ export default {
       }
     }
 
+  .control-slider {
+    .slider-handle:focus {
+      outline: 1px solid var(--blueBorder);
+    }
+  }
+
   .control-input::-webkit-outer-spin-button,
   .control-input::-webkit-inner-spin-button {
       /* display: none; <- Crashes Chrome on hover */

@@ -3,7 +3,7 @@
     <label :for="id">{{ label }}</label>
     <div class="control color" :class="isActive ? 'active' : ''">
       <div class="color-control" v-click-outside="onClickOutside">
-        <div class="color-trigger" :style="`background-color: ${value}`" @click="isActive = !isActive"></div>
+        <button class="color-trigger" :style="`background-color: ${value}`" @click="isActive = !isActive" tabindex="0"></button>
         <div class="color-picker-container" v-show="isActive" >
           <Chrome v-model="value"/>
         </div>
@@ -75,6 +75,10 @@ export default {
       border-radius: var(--border-radius);
       border: 1px solid var(--border3);
       cursor: pointer;
+
+      &:focus {
+        outline: 1px solid var(--blueBorder);
+      }
     }
 
     .color-picker-container {
